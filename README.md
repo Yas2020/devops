@@ -1,4 +1,4 @@
-# build badge
+# GitHub Actions
 
 ![Build Status](https://github.com/Yas2020/devops-capstone-project/actions/workflows/ci-build.yaml/badge.svg)
 
