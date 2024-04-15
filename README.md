@@ -1,6 +1,6 @@
 # build badge
 
-![Build Status](https://github.com/Yas2020/devops-capstone-project/actions/workflows/ci-build.yml/badge.svg)
+![Build Status](https://github.com/Yas2020/devops-capstone-project/actions/workflows/ci-build.yaml/badge.svg)
 
 # DevOps Capstone Template
 
