@@ -69,7 +69,6 @@ def get_accounts():
     This endpoint will read all Accounts in the database
     """
     app.logger.info(f"Request to read all Accounts")
-    check_content_type("application/json")
     accounts = Account.all()
     app.logger.info("Returning [%s] accounts", len(accounts))
 
