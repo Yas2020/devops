@@ -140,3 +140,49 @@ class TestAccountService(TestCase):
         '''Retrieves an account that does not exists (id=0) to check for the appropriate response'''
         response = self.client.get(BASE_URL + '/0', content_type="application/json")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_all_accounts(self):
+        '''Should get the list of all accounts'''
+        self._create_accounts(5)
+        response = self.client.get(BASE_URL, content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.get_json()
+        self.assertEqual(len(data), 5)
+
+    def test_update_account(self):
+        '''Should update an existing account'''
+        # create an Account to update
+        test_account = AccountFactory()
+        response = self.client.post(
+            BASE_URL,
+            json=test_account.serialize(),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+         # update the account
+        new_account = response.get_json()
+        new_account['name'] = 'Something.Known'
+        response = self.client.put(
+            BASE_URL + f"/{new_account['id']}",
+            json=new_account,
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        new_account = response.get_json()
+        self.assertEqual(new_account['name'], 'Something.Known')
+
+    def test_delete_account(self):
+        """It should Delete an Account"""
+        account = self._create_accounts(1)[0]
+        resp = self.client.delete(f"{BASE_URL}/{account.id}")
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+
+    #######################################################################
+    #                    E R R O R     H A N D L E R S
+    #######################################################################
+    
+    def test_method_not_allowed(self):
+        """It should not allow an illegal method call"""
+        resp = self.client.delete(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
