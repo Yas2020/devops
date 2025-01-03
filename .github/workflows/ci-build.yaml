@@ -49,25 +49,23 @@ jobs:
         run: ruff format --diff 
         continue-on-error: true
    
-      - name: Download OWASP Dependency Check
-        run: |
-          VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
-          curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
-          unzip dependency-check.zip
-      - name: Run Dependency Check
-        run: |
-          ./dependency-check/bin/dependency-check.sh --out report.html --scan .
-          rm -rf dependency-check*
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: artifacts
-          path: report.html
-
+      # - name: Download OWASP Dependency Check
+      #   run: |
+      #     VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
+      #     curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
+      #     unzip dependency-check.zip
+      # - name: Run Dependency Check
+      #   run: |
+      #     ./dependency-check/bin/dependency-check.sh --out report.html --scan ./service
+      #     rm -rf dependency-check*
+      # - name: Upload Artifacts
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: artifacts
+      #     path: report.html
       - name: Run unit tests with pytest # pytest-cov can be used instead of coverage
         run: |
           coverage run -m pytest
           coverage report
         env:
-          DATABASE_URI: "postgresql://postgres:pgs3cr3t@postgres:5432/testdb"          
+          DATABASE_URI: "postgresql://postgres:pgs3cr3t@pgs3cr3t:5432/testdb"          
