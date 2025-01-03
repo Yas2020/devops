@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Pull git repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Update pip
         run: python -m pip install --upgrade pip 
       - name: Install dependencies
