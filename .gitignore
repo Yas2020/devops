@@ -112,3 +112,4 @@ ENV/
 .ropeproject
 
 .ruff_cache
+.pytest_cache
