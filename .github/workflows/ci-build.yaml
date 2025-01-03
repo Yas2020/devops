@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: python:3.9-slim
+    container: python:3.10-slim
 
     services:
       postgres: 
@@ -47,7 +47,10 @@ jobs:
       - name: Download OWASP Dependency Check
         shell: bash
         run: |
-          curl -s https://jeremylong.github.io/DependencyCheck/current.txt      
+          git clone --depth 1 https://github.com/jeremylong/DependencyCheck.git
+          mvn -s settings.xml install
+          ./cli/target/release/bin/dependency-check.sh -h
+          ./cli/target/release/bin/dependency-check.sh --out . --scan .
         # curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
           # unzip dependency-check.zip
       # - name: Run Dependency Check
