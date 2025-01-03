@@ -51,8 +51,8 @@ jobs:
           unzip dependency-check.zip
       - name: Run Dependency Check
         run: |
-          java -version
-          whereis java
+          echo $(java -version)
+          echo $(whereis java)
           export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
           export PATH=$JAVA_HOME/bin:$PATH
           ./dependency-check/bin/dependency-check.sh --out report.html --scan .
