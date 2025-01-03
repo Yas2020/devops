@@ -46,6 +46,7 @@ jobs:
         continue-on-error: true
       - name: Download OWASP Dependency Check
         run: |
+          apt install curl
           VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
           echo $(java -version)
           echo $(whereis java)
