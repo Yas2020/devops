@@ -45,8 +45,8 @@ jobs:
         run: ruff format --diff 
         continue-on-error: true
       - name: Download OWASP Dependency Check
+        shell: bash
         run: |
-          apt install curl
           VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
           echo $(java -version)
           echo $(whereis java)
