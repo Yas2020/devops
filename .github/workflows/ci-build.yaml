@@ -38,7 +38,7 @@ jobs:
           flake8 service --count --max-complexity=10 --max-line-length=127 --statistics
         continue-on-error: true
       - name: Install the code linting and formatting tool with Ruff
-        run: pipx install ruff
+        run: pip install ruff
       - name: Lint code with Ruff
         run: ruff check --output-format=github
       - name: Check code formatting with Ruff
