@@ -8,7 +8,7 @@ on:
       - main
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     container: python:3.10-slim
 
     services:
@@ -44,22 +44,11 @@ jobs:
       - name: Check code formatting with Ruff
         run: ruff format --diff 
         continue-on-error: true
-
-      - name: Git checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: '0'
-      - name: git
+   
+      - name: Download OWASP Dependency Check
         run: |
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
-          git --version
-      # - name: Download OWASP Dependency Check
-      #   run: |
-      #     git clone --depth 1 https://github.com/jeremylong/DependencyCheck.git
-      #     mvn -s settings.xml install
-      #     ./cli/target/release/bin/dependency-check.sh -h
-      #     ./cli/target/release/bin/dependency-check.sh --out . --scan .
-        # curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
+          echo $curl -s https://jeremylong.github.io/DependencyCheck/current.txt
+          curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
           # unzip dependency-check.zip
       # - name: Run Dependency Check
       #   run: |
