@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Pull git repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
       - name: Update pip
         run: python -m pip install --upgrade pip 
       - name: Install dependencies
@@ -44,13 +44,21 @@ jobs:
       - name: Check code formatting with Ruff
         run: ruff format --diff 
         continue-on-error: true
-      - name: Download OWASP Dependency Check
-        shell: bash
+
+      - name: Git checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+      - name: git
         run: |
-          git clone --depth 1 https://github.com/jeremylong/DependencyCheck.git
-          mvn -s settings.xml install
-          ./cli/target/release/bin/dependency-check.sh -h
-          ./cli/target/release/bin/dependency-check.sh --out . --scan .
+          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          git --version
+      # - name: Download OWASP Dependency Check
+      #   run: |
+      #     git clone --depth 1 https://github.com/jeremylong/DependencyCheck.git
+      #     mvn -s settings.xml install
+      #     ./cli/target/release/bin/dependency-check.sh -h
+      #     ./cli/target/release/bin/dependency-check.sh --out . --scan .
         # curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
           # unzip dependency-check.zip
       # - name: Run Dependency Check
