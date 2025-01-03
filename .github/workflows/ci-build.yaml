@@ -24,7 +24,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -37,11 +36,11 @@ jobs:
         run: python -m pip install --upgrade pip 
       - name: Install dependencies
         run: pip install -r requirements.txt
-      - name: Lint with flake8
-        run: |
-          flake8 service --count --select=E9,F63,F7,F82 --show-source --statistics
-          flake8 service --count --max-complexity=10 --max-line-length=127 --statistics
-        continue-on-error: true
+      # - name: Lint with flake8
+      #   run: |
+      #     flake8 service --count --select=E9,F63,F7,F82 --show-source --statistics
+      #     flake8 service --count --max-complexity=10 --max-line-length=127 --statistics
+      #   continue-on-error: true
       - name: Install the code linting and formatting tool with Ruff
         run: pip install ruff
       - name: Lint code with Ruff
@@ -52,23 +51,20 @@ jobs:
    
       - name: Download OWASP Dependency Check
         run: |
-          echo $curl -s https://jeremylong.github.io/DependencyCheck/current.txt
+          VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
           curl -sL "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
-          # unzip dependency-check.zip
-      # - name: Run Dependency Check
-      #   run: |
-      #     echo $(java -version)
-      #     echo $(whereis java)
-      #     export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
-      #     export PATH=$JAVA_HOME/bin:$PATH
-      #     # ./dependency-check/bin/dependency-check.sh --out report.html --scan .
-      #     # rm -rf dependency-check*
+          unzip dependency-check.zip
+      - name: Run Dependency Check
+        run: |
+          ./dependency-check/bin/dependency-check.sh --out report.html --scan .
+          rm -rf dependency-check*
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v2
         with:
           name: artifacts
           path: report.html
+          
       - name: Run unit tests with pytest # pytest-cov can be used instead of coverage
         run: |
           coverage run -m pytest
