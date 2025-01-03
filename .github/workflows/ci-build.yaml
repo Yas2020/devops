@@ -8,8 +8,8 @@ on:
       - main
 jobs:
   build:
-    runs-on: ubuntu-20.04
-    container: python:3.10-slim
+    runs-on: ubuntu-22.04
+    # container: python:3.10-slim
 
     services:
       postgres: 
@@ -26,6 +26,11 @@ jobs:
           --health-retries 5
 
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
       - name: Pull git repo
         uses: actions/checkout@v2
       - name: Update pip
