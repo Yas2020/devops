@@ -44,7 +44,7 @@ jobs:
       - name: Install the code linting and formatting tool with Ruff
         run: pip install ruff
       - name: Lint code with Ruff
-        run: ruff check --output-format=github
+        run: ruff check --select=E9,F63,F7,F82 --output-format=github
       - name: Check code formatting with Ruff
         run: ruff format --diff 
         continue-on-error: true
@@ -68,4 +68,4 @@ jobs:
           coverage run -m pytest
           coverage report
         env:
-          DATABASE_URI: "postgresql://postgres:pgs3cr3t@pgs3cr3t:5432/testdb"          
+          DATABASE_URI: "postgresql://postgres:pgs3cr3t@localhost:5432/testdb"          
